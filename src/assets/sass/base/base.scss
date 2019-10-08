@@ -1,0 +1,41 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  //this defines what 1rem is
+  font-size: 50%; //1 rem = 10px
+
+  @include respond(tab-port) {
+    font-size: 55%; // 1 rem = 8px
+  }
+
+  @include respond(tab-land) {
+    font-size: 56.25%; // 1 rem = 9px
+  }
+
+  @include respond(desktop) {
+    font-size: 62.5%; // 1rem = 10px
+  }
+
+  @include respond(big-desktop) {
+    font-size: 75%; // 1 rem = 12
+  }
+}
+
+body {
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue',
+    sans-serif;
+  // font-family: HiraMaruPro-W4;
+  font-weight: 200;
+  box-sizing: border-box;
+}
+
+.container {
+  position: absolute;
+  width: 100%;
+}

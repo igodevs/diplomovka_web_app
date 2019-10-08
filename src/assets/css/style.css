@@ -1,0 +1,65 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  font-size: 50%; }
+  @media only screen and (min-width: 45em) {
+    html {
+      font-size: 55%; } }
+  @media only screen and (min-width: 75em) {
+    html {
+      font-size: 56.25%; } }
+  @media only screen and (min-width: 90em) {
+    html {
+      font-size: 62.5%; } }
+  @media only screen and (min-width: 112.5em) {
+    html {
+      font-size: 75%; } }
+
+body {
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', sans-serif;
+  font-weight: 200;
+  box-sizing: border-box; }
+
+.container {
+  position: absolute;
+  width: 100%; }
+
+.math-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 7vh 7vw; }
+  .math-page__box {
+    width: 41vw;
+    height: 41vh;
+    box-shadow: 3px 10px 17px -2px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem; }
+    .math-page__box:hover {
+      transition: all 0.2s;
+      box-shadow: 0 2.5rem 4rem rgba(0, 0, 0, 0.3);
+      cursor: pointer; }
+
+.logo {
+  width: 30rem; }
+
+.cls-1 {
+  fill: #ffcf43; }
+
+.cls-2 {
+  fill: #fe4a49; }
+
+.cls-3 {
+  fill: #0d9edf; }
+
+.cls-4 {
+  fill: #5ce0d8; }

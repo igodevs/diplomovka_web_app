@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.94 61.66">
+<defs>
+  <style>.cls-1{fill:#ffcf43;}.cls-2{fill:#fe4a49;}.cls-3{fill:#0d9edf;}.cls-4{fill:#5ce0d8;}</style>
+  </defs><title>Asset 5</title>
+  <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1">
+  <rect class="cls-1" y="13.48" width="33.29" height="6.32" rx="3.16"/>
+  <rect class="cls-2" y="45.81" width="33.29" height="6.32" rx="3.16" transform="translate(39.5 2.57) rotate(45)"/>
+  <rect class="cls-2" y="45.81" width="33.29" height="6.32" rx="3.16" transform="translate(-29.75 26.11) rotate(-45)"/>
+  <rect class="cls-3" x="39.65" y="45.81" width="33.29" height="6.32" rx="3.16"/>
+  <rect class="cls-3" x="53.39" y="36.65" width="5.81" height="5.81" rx="2.9"/>
+  <rect class="cls-3" x="53.39" y="55.48" width="5.81" height="5.81" rx="2.9"/>
+  <rect class="cls-4" x="39.65" y="13.48" width="33.29" height="6.32" rx="3.16"/>
+  <rect class="cls-4" x="39.65" y="13.48" width="33.29" height="6.32" rx="3.16" transform="translate(39.65 72.94) rotate(-90)"/>
+  </g></g>
+</svg>
