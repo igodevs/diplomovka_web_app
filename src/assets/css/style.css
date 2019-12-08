@@ -49,6 +49,410 @@ body {
       box-shadow: 0 2.5rem 4rem rgba(0, 0, 0, 0.3);
       cursor: pointer; }
 
+.box {
+  position: relative;
+  top: 0;
+  opacity: 1;
+  float: left;
+  padding: 60px 50px 40px 50px;
+  width: 100%;
+  background: #eee;
+  border-radius: 10px;
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  z-index: 5; }
+
+.box.back {
+  transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  top: -20px;
+  opacity: 0.8;
+  z-index: -1; }
+
+.box:before {
+  content: '';
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  position: absolute;
+  top: -10px;
+  background: rgba(238, 238, 238, 0.6);
+  left: 0;
+  transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  z-index: -1; }
+
+.overbox .title {
+  color: #fff; }
+
+.overbox .title:before {
+  background: #fff; }
+
+.title {
+  width: 100%;
+  float: left;
+  line-height: 46px;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ed2553;
+  position: relative; }
+
+.title:before {
+  content: '';
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -50px;
+  background: #ed2553; }
+
+.input,
+.input label,
+.input input,
+.input .spin,
+.button,
+.button button .button.login button i.fa,
+.material-button .shape:before,
+.material-button .shape:after,
+.button.login button {
+  transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  -ms-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+.material-button,
+.alt-2,
+.material-button .shape,
+.alt-2 .shape,
+.box {
+  transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-transition: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  -ms-transition: 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+.input,
+.input label,
+.input input,
+.input .spin,
+.button,
+.button button {
+  width: 100%;
+  float: left; }
+
+.input,
+.button {
+  margin-top: 30px;
+  height: 70px; }
+
+.input,
+.input input,
+.button,
+.button button {
+  position: relative; }
+
+.input input {
+  height: 60px;
+  top: 10px;
+  border: none;
+  background: transparent;
+  outline: none; }
+
+.input input,
+.input label,
+.button button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 300; }
+
+.input:before,
+.input .spin {
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0; }
+
+.checkboxPassword {
+  position: relative; }
+
+.input:before {
+  content: '';
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 3; }
+
+.input .spin {
+  background: #ed2553;
+  z-index: 4;
+  width: 0; }
+
+.overbox .input .spin {
+  background: white; }
+
+.overbox .input:before {
+  background: rgba(255, 255, 255, 0.5); }
+
+.input label {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  z-index: 2;
+  cursor: pointer;
+  line-height: 60px; }
+
+.button.login {
+  width: 60%;
+  left: 20%; }
+
+.button.login button,
+.button button {
+  width: 100%;
+  line-height: 64px;
+  left: 0%;
+  background-color: transparent;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  font-weight: 900;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.2); }
+
+.button.login {
+  margin-top: 30px; }
+
+.button {
+  margin-top: 20px; }
+
+.button button {
+  background-color: #fff;
+  color: #ed2553;
+  border: none; }
+
+.button.login button.active {
+  border: 3px solid transparent;
+  color: #fff !important; }
+
+.button.login button.active span {
+  opacity: 0;
+  transform: scale(0);
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0); }
+
+.button.login button.active i.fa {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  -webkit-transform: scale(1) rotate(0deg);
+  -ms-transform: scale(1) rotate(0deg); }
+
+.button.login button i.fa {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 60px;
+  transform: scale(0) rotate(-45deg);
+  -webkit-transform: scale(0) rotate(-45deg);
+  -ms-transform: scale(0) rotate(-45deg); }
+
+.button.login button:hover {
+  color: #ed2553;
+  border-color: #ed2553; }
+
+.button {
+  margin: 40px 0;
+  overflow: hidden;
+  z-index: 2; }
+
+.button button {
+  cursor: pointer;
+  position: relative;
+  z-index: 2; }
+
+.pass-forgot {
+  width: 100%;
+  float: left;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 18px;
+  cursor: pointer; }
+
+.click-efect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ed2553;
+  border-radius: 50%; }
+
+.overbox {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: inherit;
+  border-radius: 10px;
+  padding: 60px 50px 40px 50px; }
+
+.overbox .title,
+.overbox .button,
+.overbox .input {
+  z-index: 111;
+  position: relative;
+  color: #fff !important;
+  display: none; }
+
+.overbox .title {
+  width: 80%; }
+
+.overbox .input {
+  margin-top: 20px; }
+
+.overbox .input input,
+.overbox .input label {
+  color: #fff; }
+
+.overbox .material-button,
+.overbox .material-button .shape,
+.overbox .alt-2,
+.overbox .alt-2 .shape {
+  display: block; }
+
+.material-button,
+.alt-2 {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #ed2553;
+  position: absolute;
+  top: 40px;
+  right: -70px;
+  cursor: pointer;
+  z-index: 100;
+  transform: translate(0%, 0%);
+  -webkit-transform: translate(0%, 0%);
+  -ms-transform: translate(0%, 0%); }
+
+.material-button .shape,
+.alt-2 .shape {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%; }
+
+.material-button .shape:before,
+.alt-2 .shape:before,
+.material-button .shape:after,
+.alt-2 .shape:after {
+  content: '';
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(360deg);
+  -webkit-transform: translate(-50%, -50%) rotate(360deg);
+  -ms-transform: translate(-50%, -50%) rotate(360deg); }
+
+.material-button .shape:before,
+.alt-2 .shape:before {
+  width: 25px;
+  height: 4px; }
+
+.material-button .shape:after,
+.alt-2 .shape:after {
+  height: 25px;
+  width: 4px; }
+
+.material-button.active,
+.alt-2.active {
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%) rotate(0deg);
+  -webkit-transform: translate(50%, -50%) rotate(0deg);
+  -ms-transform: translate(50%, -50%) rotate(0deg); }
+
+.materialContainer {
+  width: 100%;
+  max-width: 460px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%); }
+
+.section-examples {
+  width: 100%;
+  height: 100vh;
+  padding: 0 10rem; }
+
+.examples-informations {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2.5rem;
+  padding-top: 8rem; }
+
+.examples-math_action {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .examples-math_action--progressbar {
+    width: 20rem;
+    height: 20rem;
+    margin-bottom: 4rem; }
+    .examples-math_action--progressbar-content {
+      font-size: 3rem; }
+  .examples-math_action--answer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4rem; }
+    .examples-math_action--answer input {
+      background-color: #eee;
+      margin-bottom: 2rem;
+      width: 25rem;
+      height: 4rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 2rem;
+      text-align: center; }
+    .examples-math_action--answer button {
+      width: 25rem;
+      height: 4rem;
+      border: none;
+      border-radius: 5px;
+      outline: none; }
+
+.stats-page {
+  width: 100%;
+  height: 100%;
+  padding-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+
+.stats-box {
+  box-shadow: 3px 10px 17px -2px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  margin: 2rem 4rem 2rem 0; }
+
+.line-chart-stats {
+  padding-top: 5rem;
+  widows: 80% !important;
+  height: auto; }
+
+.pies-chart-stats {
+  padding-top: 5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; }
+  .pies-chart-stats :nth-child(4n) {
+    margin-right: 0; }
+
 .logo {
   width: 30rem; }
 
@@ -63,3 +467,103 @@ body {
 
 .cls-4 {
   fill: #5ce0d8; }
+
+.navigation {
+  width: 100%;
+  height: 6rem;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.5); }
+  .navigation-logo {
+    width: 10rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 2rem; }
+    .navigation-logo img {
+      width: 5rem;
+      height: 5rem;
+      cursor: pointer; }
+  .navigation-buttons {
+    width: auto;
+    height: 100%;
+    display: flex;
+    padding-right: 2rem;
+    align-items: center; }
+    .navigation-buttons :not(:last-child) {
+      margin-right: 1rem; }
+  .navigation-button {
+    width: auto;
+    border-radius: 5px;
+    padding: 1.5rem;
+    font-size: 1.3rem;
+    background-color: rgba(13, 158, 223, 0.3);
+    cursor: pointer;
+    transition: all 0.3s; }
+  .navigation-button:hover {
+    background-color: rgba(13, 158, 223, 0.7);
+    box-shadow: 0 1.3rem 1.5rem rgba(0, 0, 0, 0.3); }
+
+.section-table {
+  margin: 2rem 4rem;
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(41, 152, 255, 0.6);
+  box-shadow: 3px 10px 17px -2px rgba(0, 0, 0, 0.2);
+  padding: 4rem; }
+
+.table__thead {
+  font-size: 1.6rem;
+  display: flex;
+  font-weight: 600;
+  background-color: rgba(41, 152, 255, 0.5);
+  border-bottom-style: solid;
+  border-bottom-width: 1px; }
+  .table__thead :last-child {
+    height: 5rem;
+    width: 20rem; }
+  .table__thead :first-child {
+    margin-left: 2rem; }
+  .table__thead-p {
+    display: flex;
+    align-items: center;
+    color: white;
+    height: 5rem;
+    width: 15rem; }
+
+.table__row {
+  display: flex; }
+
+.table__tbody {
+  font-size: 1.4rem;
+  display: flex; }
+  .table__tbody :last-child {
+    height: 3rem;
+    width: 20rem; }
+  .table__tbody :first-child {
+    margin-left: 2rem; }
+  .table__tbody-p {
+    height: 3rem;
+    width: 15rem; }
+
+.table__tbody-input {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center; }
+  .table__tbody-input-p {
+    height: 3rem;
+    width: 15rem; }
+
+.btn-profile-update {
+  margin: 0.4rem;
+  width: 13rem; }
+
+.table__under {
+  display: flex; }

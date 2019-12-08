@@ -6,18 +6,20 @@ import {
   ILoginUserFailed,
   ISetOperation,
   ISetDarkMode,
-  ISetQuestionNumber
+  ISetQuestionNumber,
+  INew
 } from './';
 
 export enum ActionTypes {
-  emailChanged,
   passwordChanged,
   loginUserLoading,
   loginUserSuccess,
   loginUserFailed,
   setOperation,
   setDarkMode,
-  setQuestionNumber
+  setQuestionNumber,
+  emailChanged,
+  new
 }
 
 export type Action =
@@ -28,4 +30,5 @@ export type Action =
   | ILoginUserLoading
   | ISetOperation
   | ISetDarkMode
-  | ISetQuestionNumber;
+  | ISetQuestionNumber
+  | INew;

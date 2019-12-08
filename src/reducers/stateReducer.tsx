@@ -1,5 +1,5 @@
 import { ActionTypes, Action } from '../actions';
-import { IStateApp } from '.';
+import { IStateApp } from './';
 
 const INITIAL_STATE: IStateApp = {
   email: '',
@@ -16,13 +16,16 @@ export const stateReducer = (
   state: IStateApp = INITIAL_STATE,
   action: Action
 ) => {
+  console.log('stateReducer', action.type, action);
   switch (action.type) {
+    case ActionTypes.new:
+      return Object.assign({}, state, { email: action.payload });
     case ActionTypes.emailChanged:
-      return Object.assign({}, state, { ...state, email: action.payload });
+      return Object.assign({}, state, { email: action.payload });
     case ActionTypes.passwordChanged:
-      return Object.assign({}, state, { ...state, password: action.payload });
+      return Object.assign({}, state, { password: action.payload });
     case ActionTypes.loginUserLoading:
-      return Object.assign({}, state, { ...state, loading: true, error: '' });
+      return Object.assign({}, state, { loading: true, error: '' });
     case ActionTypes.loginUserSuccess:
       return Object.assign({}, state, { user: action.payload });
     case ActionTypes.loginUserFailed:

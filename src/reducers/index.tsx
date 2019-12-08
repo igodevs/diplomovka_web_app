@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux';
 import { questionStateReducer } from './questionsReducer';
 import { stateReducer } from './stateReducer';
+import { IUser } from '../types/webapp';
 
 export interface IStateApp {
   email: string;
   password: string;
   loading: boolean;
   error: string;
-  user: firebase.auth.AuthCredential | null;
+  user: IUser | null;
   operation: string;
   color: string;
   darkMode: boolean;

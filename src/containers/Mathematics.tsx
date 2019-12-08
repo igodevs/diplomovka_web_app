@@ -3,7 +3,9 @@ import Addition from './Addition';
 import Substraction from './Substraction';
 import Multiplying from './Multiplying';
 import Division from './Division';
-import { IStateRedux, IStateApp, IQuestionState } from '../reducers';
+import Examples from './Examples';
+import { RouteComponentProps } from 'react-router-dom';
+import { IStateRedux } from '../reducers';
 import { connect } from 'react-redux';
 
 interface IPropsFromState {
@@ -11,26 +13,26 @@ interface IPropsFromState {
   color: string;
 }
 
-interface IPropsReceived {
-  history: object;
-  location: object;
-  match: object;
+interface IPropsReceived extends RouteComponentProps<any> {
+  // location: object;
+  // match: object;
+  operation: string;
 }
 
 class Mathematics extends Component<IPropsFromState & IPropsReceived> {
-  constructor(props: IPropsFromState & IPropsReceived) {
-    super(props);
+  componentDidMount() {
+    console.log(this.props);
   }
 
   componentDidUpdate(prevProps: IPropsFromState & IPropsReceived): void {
     console.log(this.props);
   }
   render() {
-    console.log('operation', this.props);
-    console.log(typeof this.props.history);
-    switch (this.props.operation) {
+    switch (this.props.match.params.id) {
+      case 'main-math':
+        return <Examples />;
       case 'addition':
-        return <Addition />;
+        return <Addition match={this.props.match} />;
       case 'substraction':
         return <Substraction />;
       case 'multiplying':
@@ -44,8 +46,7 @@ class Mathematics extends Component<IPropsFromState & IPropsReceived> {
 }
 
 const mapStateToProps = (
-  state: IStateRedux,
-  ownProps = {}
+  state: IStateRedux
 ): { operation: string; color: string } => {
   return {
     operation: state.stateReducer.operation,

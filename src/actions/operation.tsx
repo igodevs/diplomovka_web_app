@@ -9,6 +9,10 @@ export interface ISetDarkMode {
   type: ActionTypes.setDarkMode;
   payload: boolean;
 }
+export interface INew {
+  type: ActionTypes.new;
+  payload: string;
+}
 
 export const setOperation = (
   operation: string,
@@ -17,6 +21,14 @@ export const setOperation = (
   return {
     type: ActionTypes.setOperation,
     payload: { operation, color }
+  };
+};
+
+export const setEmail = (operation: string): INew => {
+  console.log('setEmail', operation);
+  return {
+    type: ActionTypes.new,
+    payload: operation
   };
 };
 

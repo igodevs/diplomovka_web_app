@@ -1,0 +1,30 @@
+.stats-page {
+  width: 100%;
+  height: 100%;
+  padding-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stats-box {
+  box-shadow: 3px 10px 17px -2px rgba($color-black, 0.2);
+  padding: 2rem;
+  margin: 2rem 4rem 2rem 0;
+}
+
+.line-chart-stats {
+  padding-top: 5rem;
+  widows: 80% !important;
+  height: auto;
+}
+
+.pies-chart-stats {
+  padding-top: 5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  :nth-child(4n) {
+    margin-right: 0;
+  }
+}

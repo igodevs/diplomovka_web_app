@@ -1,6 +1,8 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import history from '../history';
 import { ActionTypes } from './';
+import { IUser } from '../types/webapp';
 
 import { Dispatch } from 'redux';
 
@@ -20,14 +22,19 @@ export interface ILoginUserLoading {
 
 export interface ILoginUserSucess {
   type: ActionTypes.loginUserSuccess;
-  payload: firebase.auth.UserCredential;
+  payload: IUser | null;
 }
 
 export interface ILoginUserFailed {
   type: ActionTypes.loginUserFailed;
 }
 
-export const emailChanged = (text: string): IEmailChanged => {
+export interface ILoginUser {
+  email: string;
+  password: string;
+}
+
+export const emailchanged = (text: string): IEmailChanged => {
   return {
     type: ActionTypes.emailChanged,
     payload: text
@@ -41,45 +48,49 @@ export const passwordChanged = (text: string): IPasswordChanged => {
   };
 };
 
-export const loginUser = ({
-  email,
-  password
-}: {
-  email: string;
-  password: string;
-}) => {
-  console.log('here');
-  console.log(email, password);
-  return (dispatch: Dispatch) => {
-    dispatch<ILoginUserLoading>({ type: ActionTypes.loginUserLoading });
-
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(user => loginUserSucess(dispatch, user))
-      .catch(err => {
-        console.log(err);
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(email, password)
-          .then(user => loginUserSucess(dispatch, user))
-          .catch(() => loginUserFail(dispatch));
-      });
+export const loginUserSuccess = (user: IUser | null): ILoginUserSucess => {
+  return {
+    type: ActionTypes.loginUserSuccess,
+    payload: user
   };
 };
 
-const loginUserSucess = (
-  dispatch: Dispatch,
-  user: firebase.auth.UserCredential
-) => {
-  dispatch<ILoginUserSucess>({
-    type: ActionTypes.loginUserSuccess,
-    payload: user
-  });
+// export const loginUser = ({ email, password }: ILoginUser) => {
+//   console.log('here');
+//   console.log(email, password);
+//   return (dispatch: Dispatch) => {
+//     console.log('theres', dispatch);
+//     dispatch<ILoginUserLoading>({ type: ActionTypes.loginUserLoading });
 
-  history.push('/');
-};
+//     firebase
+//       .auth()
+//       .signInWithEmailAndPassword(email, password)
+//       .then(user => loginUserSucess(dispatch, user))
+//       .catch(err => {
+//         console.log(err);
+//         firebase
+//           .auth()
+//           .createUserWithEmailAndPassword(email, password)
+//           .then(user => loginUserSucess(dispatch, user))
+//           .catch(() => loginUserFail(dispatch));
+//       });
+//   };
+// };
 
-const loginUserFail = (dispatch: Dispatch) => {
-  dispatch<ILoginUserFailed>({ type: ActionTypes.loginUserFailed });
-};
+// const loginUserSucess = (
+//   dispatch: Dispatch,
+//   user: firebase.auth.UserCredential
+// ) => {
+//   console.log(user);
+//   dispatch<ILoginUserSucess>({
+//     type: ActionTypes.loginUserSuccess,
+//     payload: user
+//   });
+
+//   history.push('/');
+// };
+
+// const loginUserFail = (dispatch: Dispatch) => {
+//   console.log('d', dispatch);
+//   dispatch<ILoginUserFailed>({ type: ActionTypes.loginUserFailed });
+// };

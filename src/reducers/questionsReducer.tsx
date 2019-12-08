@@ -13,6 +13,7 @@ export const questionStateReducer = (
   state: IQuestionState = INITIAL_STATE,
   action: Action
 ) => {
+  console.log('questionStateReducer', action.type, action);
   switch (action.type) {
     case ActionTypes.setQuestionNumber:
       console.log('reducer', action.payload);

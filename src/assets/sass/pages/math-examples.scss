@@ -1,0 +1,55 @@
+.section-examples {
+  width: 100%;
+  height: 100vh;
+  padding: 0 10rem;
+}
+
+.examples {
+  &-informations {
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2.5rem;
+    padding-top: 8rem;
+  }
+
+  &-math_action {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &--progressbar {
+      width: 20rem;
+      height: 20rem;
+      margin-bottom: 4rem;
+      &-content {
+        font-size: 3rem;
+      }
+    }
+    &--answer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 4rem;
+      & input {
+        background-color: $color-grey-light-2;
+        margin-bottom: 2rem;
+        width: 25rem;
+        height: 4rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      & button {
+        width: 25rem;
+        height: 4rem;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+      }
+    }
+  }
+}

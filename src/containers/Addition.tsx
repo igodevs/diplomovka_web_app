@@ -3,11 +3,36 @@ import { connect } from 'react-redux';
 import { setQuestionNumber } from '../actions';
 import { IStateRedux } from '../reducers';
 
-interface IProps {
+interface IPropsFromState {
   operation: string;
+  color: string;
 }
 
-class Addition extends Component<IProps> {
+interface IProps {
+  match: any;
+}
+
+class Addition extends Component<IProps & IPropsFromState> {
+  constructor(props: IProps & IPropsFromState) {
+    super(props);
+
+    this.state = {
+      answer: undefined,
+      answerColor: this.props.color
+    };
+  }
+
+  validateAnswer = (answer: number, counter: number) => {
+    this.setState({ answer });
+    this.setState({ answerColor: answer !== 6 ? 'red' : this.props.color });
+    if (answer === 6) {
+      if (counter + 1 <= 20)
+        setQuestionNumber(this.props.match.id, counter + 1);
+    } else {
+      if (counter - 1 >= 1) setQuestionNumber(this.props.match.id, counter - 1);
+    }
+  };
+
   render() {
     return <div>addition</div>;
   }

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import logo from '../assets/logo.svg';
-import { Link } from 'react-router-dom';
-import { useSpring, animated, useTransition } from 'react-spring';
+import { animated, useTransition } from 'react-spring';
 import { connect } from 'react-redux';
 import history from '../history';
 import { IStateRedux } from '../reducers';
 import { setOperation } from '../actions';
-import { JSXElement } from '@babel/types';
 interface IState {
   loading: boolean;
 }
@@ -115,8 +112,8 @@ const logos = [
 ];
 
 const Home: React.FC<IProps> = ({ setOperation }) => {
-  const [clicked, setClicked] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // const [clicked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [index, set] = useState(0);
 
   //componentDidMount
@@ -126,11 +123,11 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
     }, 3000);
   });
 
-  const { backgroundColor, transform } = useSpring({
-    backgroundColor: clicked ? 'red' : '#5CE0D8',
-    transform: `scale(${clicked ? 5 : 1})`,
-    config: { duration: 100 }
-  });
+  // const { backgroundColor, transform } = useSpring({
+  //   backgroundColor: clicked ? 'red' : '#5CE0D8',
+  //   transform: `scale(${clicked ? 5 : 1})`,
+  //   config: { duration: 100 }
+  // });
 
   const transition = useTransition(logos[index], item => item.id, {
     from: { opacity: 0 },
@@ -179,7 +176,21 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
     <div className="math-page">
       <div
         onClick={() => {
-          history.push('/math');
+          history.push('/math/main-math');
+          setOperation('examples', '#00A572');
+        }}
+        className="math-page__box"
+        style={{
+          backgroundColor: '#00A572',
+          width: '100%',
+          marginBottom: '4vh'
+        }}
+      >
+        Matematika
+      </div>
+      <div
+        onClick={() => {
+          history.push('/math/addition');
           setOperation('addition', '#FFCF43');
         }}
         className="math-page__box"
@@ -210,7 +221,7 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
 
       <div
         onClick={() => {
-          history.push('/math');
+          history.push('/math/substraction');
           setOperation('substraction', '#5CE0D8');
         }}
         className="math-page__box"
@@ -225,8 +236,8 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
       </div>
       <div
         onClick={() => {
-          history.push('/math');
-          setOperation('substraction', '#FE4A49');
+          history.push('/math/multiplying');
+          setOperation('multiplying', '#FE4A49');
         }}
         className="math-page__box"
         style={{ backgroundColor: '#FE4A49', marginRight: '4vw' }}
@@ -235,8 +246,8 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
       </div>
       <div
         onClick={() => {
-          history.push('/math');
-          setOperation('substraction', '#0D9EDF');
+          history.push('/math/division');
+          setOperation('division', '#0D9EDF');
         }}
         className="math-page__box"
         style={{ backgroundColor: '#0D9EDF' }}
