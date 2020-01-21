@@ -1,13 +1,15 @@
-@import 'abstracts/mixins';
-@import 'abstracts/variables';
+@import 'abstracts/mixins.scss';
+@import 'abstracts/variables.scss';
 
 @import 'base/base';
 
 @import 'pages/math-page';
-
 @import 'pages/login-page.scss';
 @import 'pages/math-examples';
 @import 'pages/stats-page';
+@import 'pages/end-test.scss';
+@import 'pages/home-not-logged-in.scss';
+
 @import 'components/logo';
 @import 'components/navigation-bar.scss';
 @import 'components/circularProgressBar';

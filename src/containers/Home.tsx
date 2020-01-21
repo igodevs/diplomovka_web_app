@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { animated, useTransition } from 'react-spring';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import history from '../history';
 import { IStateRedux } from '../reducers';
-import { setOperation } from '../actions';
-interface IState {
-  loading: boolean;
-}
-
-interface IProps {
-  setOperation: typeof setOperation;
-}
+import { setOperation, ISetOperation } from '../actions';
+import logo from '../assets/logo.svg';
+import { IUser } from '../types/webapp';
+import HomeNotLoggedIn from './HomeNotLoggedIn';
 
 const logos = [
   {
@@ -111,7 +108,25 @@ const logos = [
   }
 ];
 
-const Home: React.FC<IProps> = ({ setOperation }) => {
+interface IState {
+  loading: boolean;
+}
+
+interface IProps {}
+
+interface IPropsRedux {
+  setOperation: (operation: string, color: string) => ISetOperation;
+}
+
+interface IPropsReceived {
+  operation: string;
+  darkMode: boolean;
+  user: IUser | null;
+}
+
+type Props = IPropsRedux & IPropsReceived & IProps;
+
+const Home: React.FC<Props> = ({ setOperation, operation, darkMode, user }) => {
   // const [clicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [index, set] = useState(0);
@@ -172,23 +187,33 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
         </g>
       </svg>
     </div>
-  ) : (
+  ) : user ? (
     <div className="math-page">
       <div
         onClick={() => {
           history.push('/math/main-math');
-          setOperation('examples', '#00A572');
+          setOperation('examples', '#5CE0D8');
         }}
         className="math-page__box"
         style={{
-          backgroundColor: '#00A572',
-          width: '100%',
-          marginBottom: '4vh'
+          //'#FFCF43'
+          backgroundColor: 'rgba(255, 207, 67, 0.9)',
+          width: '80%',
+          height: '80%',
+          marginBottom: '4vh',
+          overflow: 'hidden'
         }}
       >
-        Matematika
+        <p style={{ fontWeight: 600, marginBottom: '2rem' }}>Matematika</p>
+        <p>Vstúpiť do testu</p>
+        <img
+          className="math-page__box-logo"
+          src={logo}
+          onClick={() => history.push('/')}
+          alt="logo"
+        />
       </div>
-      <div
+      {/* <div
         onClick={() => {
           history.push('/math/addition');
           setOperation('addition', '#FFCF43');
@@ -217,7 +242,7 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
       >
         Odčítanie
         
-      </animated.div> */}
+      </animated.div> //end comment
 
       <div
         onClick={() => {
@@ -253,19 +278,32 @@ const Home: React.FC<IProps> = ({ setOperation }) => {
         style={{ backgroundColor: '#0D9EDF' }}
       >
         Delenie
-      </div>
+      </div> */}
     </div>
+  ) : (
+    <HomeNotLoggedIn />
   );
 };
 
-const mapStateToProps = (state: IStateRedux) => {
+const mapStateToProps = (
+  state: IStateRedux,
+  ownProps: IProps
+): IPropsReceived => {
   return {
     operation: state.stateReducer.operation,
-    darkMode: state.stateReducer.darkMode
+    darkMode: state.stateReducer.darkMode,
+    user: state.stateReducer.user
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { setOperation }
-)(Home);
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: IProps
+): IPropsRedux => {
+  return {
+    setOperation: (operation: string, color: string) =>
+      dispatch(setOperation(operation, color))
+  };
+};
+
+export default connect(mapStateToProps, { setOperation })(Home);

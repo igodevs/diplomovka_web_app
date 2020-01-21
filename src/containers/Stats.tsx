@@ -4,9 +4,9 @@ import { Line, Pie } from 'react-chartjs-2';
 import { Dispatch } from 'redux';
 import { IStateRedux } from '../reducers';
 import { getAuthTokenFromSession } from '../methods';
-import { IStats, IUser } from '../types/webapp';
-import Table from '../components/Table';
-import undefined from 'firebase/empty-import';
+import LastTestTimer from '../components/LastTestTimer';
+import { IStats, IUser, ITimer } from '../types/webapp';
+import Table from '../components/TestsTable';
 
 interface ILabelData {
   labels: string[];
@@ -18,10 +18,8 @@ interface IState {
   statsData: IStats[] | null;
   firstLoad: boolean;
   lineData: ILabelData | null;
-  data1: ILabelData | null;
-  data2: ILabelData | null;
-  data3: ILabelData | null;
-  data4: ILabelData | null;
+  lastTestDateTime: Date | null;
+  lastTestTimer: ITimer | null;
 }
 
 interface IPropsState {
@@ -48,10 +46,8 @@ class Stats extends PureComponent<Props, IState> {
       statsData: null,
       firstLoad: true,
       lineData: null,
-      data1: null,
-      data2: null,
-      data3: null,
-      data4: null
+      lastTestDateTime: null,
+      lastTestTimer: null
     };
   }
 
@@ -78,9 +74,12 @@ class Stats extends PureComponent<Props, IState> {
         })
           .then(res => res.json())
           .then((data: IStats[]) => {
-            console.log(data);
+            data = data.filter(da => da.end_date_time);
             this.setState({ statsData: data, firstLoad: false });
             this.computeStatistics(data);
+            this.setState({
+              lastTestDateTime: new Date(data.reverse()[0].start_date_time)
+            });
           });
     }
   };
@@ -89,6 +88,7 @@ class Stats extends PureComponent<Props, IState> {
     let arrOfCorrectAnswers: number[] = [];
     let arrOfBadAnswers: number[] = [];
     let arrOfIds: string[] = [];
+    let i = 0;
     if (this.state.statsData) {
       datas.map(data => {
         arrOfCorrectAnswers.push(
@@ -103,7 +103,9 @@ class Stats extends PureComponent<Props, IState> {
             data.multyplying_bad_answers +
             data.substraction_bad_answers
         );
-        arrOfIds.push(data.id.toString());
+        i++;
+        //arrOfIds.push(data.id.toString());
+        arrOfIds.push(i.toString());
       });
     }
     console.log('arr', arrOfIds);
@@ -157,174 +159,54 @@ class Stats extends PureComponent<Props, IState> {
             data: arrOfBadAnswers
           }
         ]
-      },
-      data1: {
-        labels: ['Správne', 'Nesprávne'],
-        datasets: [
-          {
-            data: [
-              dataForPie[0].addition_correct_answers,
-              dataForPie[0].addition_bad_answers
-            ],
-            backgroundColor: ['#FF6384', '#FFCE56'],
-            hoverBackgroundColor: ['#FF6384', '#FFCE56']
-          }
-        ]
-      },
-      data2: {
-        labels: ['Správne', 'Nesprávne'],
-        datasets: [
-          {
-            data: [
-              dataForPie[0].substraction_correct_answers,
-              dataForPie[0].substraction_bad_answers
-            ],
-            backgroundColor: ['#FF6384', '#FFCE56'],
-            hoverBackgroundColor: ['#FF6384', '#FFCE56']
-          }
-        ]
-      },
-      data3: {
-        labels: ['Správne', 'Nesprávne'],
-        datasets: [
-          {
-            data: [
-              dataForPie[0].multyplying_correct_answers,
-              dataForPie[0].multyplying_bad_answers
-            ],
-            backgroundColor: ['#FF6384', '#FFCE56'],
-            hoverBackgroundColor: ['#FF6384', '#FFCE56']
-          }
-        ]
-      },
-      data4: {
-        labels: ['Správne', 'Nesprávne'],
-        datasets: [
-          {
-            data: [
-              dataForPie[0].division_correct_answers,
-              dataForPie[0].division_bad_answers
-            ],
-            backgroundColor: ['#FF6384', '#FFCE56'],
-            hoverBackgroundColor: ['#FF6384', '#FFCE56']
-          }
-        ]
       }
     });
   };
 
-  computePieData = (id: string, idOfPie: number) => {
-    console.log(id, idOfPie);
-    if (this.state.statsData !== null) {
-      var datas = this.state.statsData.filter(
-        data => data.id.toString() === id
-      );
-      console.log('datas', datas);
+  testing = () => {
+    if (this.state.lastTestDateTime) {
+      var date = new Date(this.state.lastTestDateTime);
 
-      switch (idOfPie) {
-        case 1:
-          this.setState({
-            data1: {
-              labels: ['Správne', 'Nesprávne'],
-              datasets: [
-                {
-                  data: [
-                    datas[0].addition_correct_answers,
-                    datas[0].addition_bad_answers
-                  ],
-                  backgroundColor: ['#FF6384', '#FFCE56'],
-                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
-                }
-              ]
-            }
-          });
-          return;
-        case 2:
-          this.setState({
-            data2: {
-              labels: ['Správne', 'Nesprávne'],
-              datasets: [
-                {
-                  data: [
-                    datas[0].substraction_correct_answers,
-                    datas[0].substraction_bad_answers
-                  ],
-                  backgroundColor: ['#FF6384', '#FFCE56'],
-                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
-                }
-              ]
-            }
-          });
-          return;
-        case 3:
-          this.setState({
-            data3: {
-              labels: ['Správne', 'Nesprávne'],
-              datasets: [
-                {
-                  data: [
-                    datas[0].multyplying_correct_answers,
-                    datas[0].multyplying_bad_answers
-                  ],
-                  backgroundColor: ['#FF6384', '#FFCE56'],
-                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
-                }
-              ]
-            }
-          });
-          return;
-        case 4:
-          this.setState({
-            data4: {
-              labels: ['Správne', 'Nesprávne'],
-              datasets: [
-                {
-                  data: [
-                    datas[0].division_correct_answers,
-                    datas[0].division_bad_answers
-                  ],
-                  backgroundColor: ['#FF6384', '#FFCE56'],
-                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
-                }
-              ]
-            }
-          });
-          return;
-        default:
-          return 0;
-      }
+      console.log(date, date.getMonth() + 1);
     }
   };
 
-  renderOptions = (id: number, arr: string[]) => {
-    return (
-      <select
-        name="cars"
-        onChange={e => this.computePieData(e.target.value, id)}
-      >
-        {[...arr].reverse().map(data => {
-          return <option value={data}>{data}</option>;
-        })}
-      </select>
-    );
-  };
-
-  a = (id: number, event: any) => {
-    if (this.state.statsData !== null)
-      console.log(
-        'id',
-        id,
-        this.state.statsData.filter(
-          data => data.id.toString() === event.target.value
-        )
-      );
-    console.log('select', event.target.value);
+  getDurationBetweenTwoDates = (start: Date, end: Date): ITimer => {
+    var delta = Math.abs(+end - +start) / 1000;
+    var days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+    var hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+    var minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+    var seconds = Math.round(delta % 60);
+    return { days, hours, minutes, seconds };
   };
 
   render() {
     return (
       <div className="stats-page">
+        <div className="stats-page__header-stats">
+          {this.state.lastTestDateTime !== null && (
+            <LastTestTimer
+              getDurationBetweenTwoDates={this.getDurationBetweenTwoDates}
+              lastTestDateTime={this.state.lastTestDateTime}
+            />
+          )}
+          {this.state.lineData !== null && (
+            <div className="line-chart">
+              <div className="line-chart-stats">
+                <div className="stats-box">
+                  <h2>Vývoj odpovedí</h2>
+                  <Line width={700} height={400} data={this.state.lineData} />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         <Table
+          getDurationBetweenTwoDates={this.getDurationBetweenTwoDates}
           headValues={[
             'id',
             'addition T',
@@ -334,63 +216,11 @@ class Stats extends PureComponent<Props, IState> {
             'multyplying T',
             'multyplying F',
             'subst T',
-            'subst F'
+            'subst F',
+            'Príklady'
           ]}
           stats={this.state.statsData}
         />
-        {this.state.lineData !== null && (
-          <div className="line-chart-stats">
-            <div className="stats-box">
-              <h2>Vývoj odpovedí</h2>
-              <Line width={700} height={400} data={this.state.lineData} />
-            </div>
-          </div>
-        )}
-        <div className="pies-chart-stats">
-          <div className="stats-box">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <h2>Sčítanie</h2>
-              {this.state.lineData !== null &&
-                this.renderOptions(1, this.state.lineData.labels)}
-            </div>
-
-            {this.state.data4 !== null && (
-              <Pie width={350} height={400} data={this.state.data1} />
-            )}
-          </div>
-          <div className="stats-box">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <h2>Odčítanie</h2>
-              {this.state.lineData !== null &&
-                this.renderOptions(2, this.state.lineData.labels)}
-            </div>
-
-            {this.state.data4 !== null && (
-              <Pie width={350} height={400} data={this.state.data2} />
-            )}
-          </div>
-          <div className="stats-box">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <h2>Násobenie</h2>
-              {this.state.lineData !== null &&
-                this.renderOptions(3, this.state.lineData.labels)}
-            </div>
-
-            {this.state.data4 !== null && (
-              <Pie width={350} height={400} data={this.state.data3} />
-            )}
-          </div>
-          <div className="stats-box">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <h2>Delenie</h2>
-              {this.state.lineData !== null &&
-                this.renderOptions(4, this.state.lineData.labels)}
-            </div>
-            {this.state.data4 !== null && (
-              <Pie width={350} height={400} data={this.state.data4} />
-            )}
-          </div>
-        </div>
       </div>
     );
   }

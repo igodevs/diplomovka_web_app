@@ -1,0 +1,81 @@
+.section-home-not-logged-in {
+  width: 100vw;
+  min-height: 100vh;
+  padding-top: 6rem;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #0d9edf 100%);
+  &__welcome {
+    width: 100%;
+    height: 70vh;
+    //background-color: rgba($color-mult, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+
+    & div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      :first-child {
+        font-size: 4rem;
+        margin-top: 7rem;
+      }
+      :last-child {
+        font-size: 2.7rem;
+        margin-top: 3rem;
+        cursor: pointer;
+        padding: 1.5rem 2.5rem;
+        background-color: $color-mult;
+        box-shadow: 3px 10px 17px -2px rgba(0, 0, 0, 0.2);
+        color: white;
+        border-radius: 7px;
+
+        // :hover {
+        //   box-shadow: 0 1.3rem 1.5rem rgba($color-black, 0.3);
+        // }
+      }
+    }
+  }
+
+  &__app {
+    width: 100%;
+    height: 80rem;
+    //background-color: rgba($color-divis, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &-note {
+      width: 100%;
+      height: 20%;
+      font-size: 4rem;
+      text-align: center;
+    }
+    &-devices {
+      width: 100%;
+      height: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &-mac {
+        height: 60%;
+        width: auto;
+      }
+
+      &-iphone {
+        height: 80%;
+        width: auto;
+      }
+
+      &-android {
+        height: 80%;
+        width: auto;
+      }
+    }
+  }
+}

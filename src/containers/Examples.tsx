@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setEmail, setQuestionNumber, setOperation } from '../actions';
+import { Dispatch } from 'redux';
+import {
+  setEmail,
+  setQuestionNumber,
+  setOperation,
+  setTestId,
+  ISetQuestionNumber,
+  ISetOperation,
+  ISetTestId
+} from '../actions';
 import { Line } from 'rc-progress';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { IStateRedux } from '../reducers';
+import { IUser, IResponse } from '../types/webapp';
+import EndTest from './EndTest';
 
-// const math = {
-//   ADDITION: 'addition',
-//   DIVISION: 'division',
-//   MULTIPlYING: 'multiplying',
-//   SUBTRACTION: 'substraction'
-// };
+interface IProps {}
 
 const mathEnum = {
   ADDITION: 0,
@@ -19,10 +25,18 @@ const mathEnum = {
   DIVISION: 3
 };
 
-interface IPropsFromState {
+interface IPropsReceived {
   operation: string;
   color: string;
   questionExamplesCounter: number;
+  user: IUser | null;
+  testId: number | null;
+}
+
+interface IPropsRedux {
+  setQuestionNumber: (operation: string, number: number) => ISetQuestionNumber;
+  setOperation: (operation: string, color: string) => ISetOperation;
+  setTestId: (id: number) => ISetTestId;
 }
 
 interface IState {
@@ -49,8 +63,10 @@ interface IResponseGetExample {
 
 let interval: NodeJS.Timeout;
 
-class Examples extends Component<IPropsFromState, IState> {
-  constructor(props: IPropsFromState) {
+type Props = IPropsRedux & IPropsReceived & IProps;
+
+class Examples extends Component<Props, IState> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       answer: undefined,
@@ -67,27 +83,89 @@ class Examples extends Component<IPropsFromState, IState> {
   }
 
   componentDidMount() {
-    setEmail('dsaf');
-    console.log(this.props.color);
     // this.randomExample(null);
-    setOperation('examples', '#00A572');
-    this.startApplication();
-    interval = setInterval(
-      () => this.setState(prevState => ({ timer: prevState.timer - 1 })),
-      1000
-    );
+    this.props.setOperation('examples', this.props.color);
+    this.createNewTest()
+      .then(data => {
+        if (data.success) {
+          this.startApplication();
+          interval = setInterval(
+            () => this.setState(prevState => ({ timer: prevState.timer - 1 })),
+            1000
+          );
+        } else {
+          // TODO CREATE ERROR PAGE
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        // TODO CREATE ERROR PAGE
+        this.setState({ ready: true });
+      });
   }
 
   componentDidUpdate() {
     if (this.state.timer === 0) {
-      this.sendExample(30000);
+      console.log('UPDATE there');
+      this.sendExample(9999);
+      this.setState({ timer: 15 });
       //clearInterval(interval);
     }
   }
 
   componentWillUnmount() {
+    console.log('UNMOUNT');
     clearInterval(interval);
+    if (!this.state.endTest) {
+      console.log('REMOVE NOT ENDED TEST');
+      fetch('http://localhost:3000/question/removeTest', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id_test: this.props.testId
+        })
+      })
+        .then(res => res.json())
+        .then((response: IResponse) => {
+          console.log('removeTest', response);
+        })
+        .catch(err =>
+          //ERROR SCREEN
+          console.log('removeTest', err)
+        );
+    }
   }
+
+  createNewTest = (): Promise<{ success: boolean; information: string }> => {
+    return new Promise((resolve, reject) => {
+      if (this.props.user) {
+        fetch('http://localhost:3000/questions/createTest', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id_user: this.props.user.id
+          })
+        })
+          .then(res => res.json())
+          .then((response: IResponse) => {
+            console.log('createTestReaponse', response);
+            if (response.type === 'success' && response.data.id) {
+              this.props.setTestId(response.data.id[0]);
+              resolve({ success: true, information: 'Test crated' });
+            } else {
+              reject({ success: false, information: 'Test not created.' });
+            }
+          })
+          .catch(err => reject({ success: false, information: err }));
+      } else {
+        reject({ success: false, information: 'User must be logged in.' });
+      }
+    });
+  };
 
   // validateAnswer = (counter) => {
   //     let answer = this.state.answer
@@ -128,13 +206,9 @@ class Examples extends Component<IPropsFromState, IState> {
     })
       .then(res => res.json())
       .then((data: IResponseGetExample) => {
-        console.log(data);
+        console.log('getExample', data);
         if (data.res === 'ok') {
-          console.log(data, data.a, data.b, data.action);
           var arr = [data.a, data.b];
-          console.log(arr[0], arr[1]);
-          console.log(this.randomExample(data.action));
-
           this.setState({
             example: arr,
             action: data.action,
@@ -146,14 +220,82 @@ class Examples extends Component<IPropsFromState, IState> {
             this.setState({ ready: true });
           }, 300);
         } else {
+          console.log('END TEST');
           this.setState({ endTest: true });
+          this.computeResultsOfTest();
         }
       })
       .catch(console.log);
   };
 
+  computeResultsOfTest() {
+    console.log('COMPUTE RESULT');
+    //FETCH
+    fetch('http://localhost:3000/question/computeResultsOfTest', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id_test: this.props.testId
+      })
+    })
+      .then(res => res.json())
+      .then((response: IResponse) => {
+        console.log('computeResults', response);
+      })
+      .catch(err =>
+        //ERROR SCREEN
+        console.log('computeResultsERR', err)
+      );
+  }
+
+  saveExampleToDB = (
+    userId: number,
+    testId: number,
+    first_number: number,
+    second_number: number,
+    mark: string,
+    answer: number,
+    is_correct_answer: boolean
+  ) => {
+    fetch('http://localhost:3000/questions/addQuestion', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id_user: userId,
+        id_test: testId,
+        first_number,
+        second_number,
+        mark: this.state.mark,
+        answer,
+        is_correct_answer
+      })
+    })
+      .then(res => res.json())
+      .then((response: IResponse) => {
+        // //console.log('createTestReaponse', response);
+        // if (response.type === 'success' && response.data.id) {
+        //   //this.props.setTestId(response.data.id[0]);
+        //   //resolve({ success: true, information: 'Test crated' });
+        // } else {
+        //   //reject({ success: false, information: 'Test not created.' });
+        // }
+      })
+      .catch(err =>
+        //reject({ success: false, information: err })
+        console.log(err)
+      );
+  };
+
   sendExample = (userResponse: number | null = null) => {
-    if (this.state.example !== null)
+    if (
+      this.state.example &&
+      this.props.user &&
+      this.state.answer !== undefined
+    )
       fetch('http://localhost:5000/evaluate', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -168,8 +310,23 @@ class Examples extends Component<IPropsFromState, IState> {
         .then(data => {
           // this.setState({answer:undefined})
           console.log(data);
+          if (
+            this.state.example &&
+            this.props.user &&
+            this.props.testId &&
+            this.state.answer !== undefined
+          )
+            this.saveExampleToDB(
+              this.props.user.id,
+              this.props.testId,
+              this.state.example[0],
+              this.state.example[1],
+              this.state.mark,
+              userResponse === null ? this.state.answer : userResponse,
+              data.res === 'success'
+            );
           if (data.res === 'success') {
-            setQuestionNumber(
+            this.props.setQuestionNumber(
               this.props.operation,
               this.props.questionExamplesCounter + 1
             );
@@ -177,7 +334,7 @@ class Examples extends Component<IPropsFromState, IState> {
           } else {
             this.setState({ answerColor: 'red' });
           }
-          this.setState({ timer: 16 });
+
           this.getExample();
         })
         .catch(console.log);
@@ -186,7 +343,6 @@ class Examples extends Component<IPropsFromState, IState> {
   randomExample = (operation: number) => {
     let marks = ['+', '/', '*', '-'];
     let mark = '';
-    console.log(operation, typeof operation);
     switch (operation) {
       case mathEnum.ADDITION:
         mark = '+';
@@ -209,9 +365,28 @@ class Examples extends Component<IPropsFromState, IState> {
     return mark;
   };
 
+  getMarkFromOperation = (operation: number) => {
+    let mark = '';
+    switch (operation) {
+      case mathEnum.ADDITION:
+        mark = '+';
+        break;
+      case mathEnum.DIVISION:
+        mark = '/';
+        break;
+      case mathEnum.MULTIPlYING:
+        mark = '*';
+        break;
+      case mathEnum.SUBTRACTION:
+        mark = '-';
+        break;
+      default:
+        break;
+    }
+    return mark;
+  };
+
   onChanged = (text: string) => {
-    console.log(text);
-    console.log(parseInt(text));
     isNaN(parseInt(text))
       ? this.setState({ answer: undefined })
       : this.setState({ answer: parseInt(text) });
@@ -225,11 +400,7 @@ class Examples extends Component<IPropsFromState, IState> {
     // }
     if (this.state.ready) {
       if (this.state.endTest) {
-        return (
-          <div>
-            <p>Koniec Testu</p>
-          </div>
-        );
+        return <EndTest />;
       } else {
         return (
           <div className="section-examples">
@@ -275,7 +446,10 @@ class Examples extends Component<IPropsFromState, IState> {
               <div className="examples-math_action--answer">
                 <input onChange={event => this.onChanged(event.target.value)} />
                 <button
-                  onClick={() => this.sendExample()}
+                  onClick={() => {
+                    this.sendExample();
+                    this.setState({ timer: 15 });
+                  }}
                   style={{ backgroundColor: this.props.color }}
                 >
                   POTVRDIT
@@ -291,15 +465,30 @@ class Examples extends Component<IPropsFromState, IState> {
   }
 }
 
-const mapStateToProps = (state: IStateRedux) => {
+const mapStateToProps = (
+  state: IStateRedux,
+  ownProps: IProps
+): IPropsReceived => {
   return {
     operation: state.stateReducer.operation,
     color: state.stateReducer.color,
-    questionExamplesCounter: state.questionState.questionExamplesCounter
+    questionExamplesCounter: state.questionState.questionExamplesCounter,
+    user: state.stateReducer.user,
+    testId: state.stateReducer.testId
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { setEmail, setQuestionNumber, setOperation }
-)(Examples);
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: IProps
+): IPropsRedux => {
+  return {
+    setQuestionNumber: (operation: string, number: number) =>
+      dispatch(setQuestionNumber(operation, number)),
+    setOperation: (operation: string, color: string) =>
+      dispatch(setOperation(operation, color)),
+    setTestId: (id: number) => dispatch(setTestId(id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Examples);

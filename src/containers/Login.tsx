@@ -27,7 +27,4 @@ class Login extends PureComponent<IProps, IState> {
 
 const mapStateToProps = (state: IStateProps) => ({});
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Login);
+export default connect(mapStateToProps, {})(Login);

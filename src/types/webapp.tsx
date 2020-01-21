@@ -16,4 +16,30 @@ export interface IStats {
   multyplying_correct_answers: number;
   substraction_bad_answers: number;
   substraction_correct_answers: number;
+  start_date_time: string;
+  end_date_time: string;
+}
+
+export interface IQuestionStats {
+  id: number;
+  id_test: number;
+  id_user: number;
+  first_number: number;
+  second_number: number;
+  mark: string;
+  answer: number;
+  is_correct_answer: boolean;
+  date_time: string;
+}
+
+export interface IResponse {
+  type: string;
+  data: any;
+}
+
+export interface ITimer {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }

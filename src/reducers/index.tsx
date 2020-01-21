@@ -12,6 +12,7 @@ export interface IStateApp {
   operation: string;
   color: string;
   darkMode: boolean;
+  testId: number | null;
 }
 
 export interface IQuestionState {

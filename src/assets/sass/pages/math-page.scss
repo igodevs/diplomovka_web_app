@@ -3,7 +3,8 @@
   height: 100vh;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  align-items: center;
+  //flex-wrap: wrap;
   padding: 7vh 7vw;
 
   &__box {
@@ -11,9 +12,20 @@
     height: 41vh;
     box-shadow: 3px 10px 17px -2px rgba($color-black, 0.2);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 2.5rem;
+    font-size: 3rem;
+    position: relative;
+
+    &-logo {
+      height: 50%;
+      width: 50%;
+      position: absolute;
+      bottom: 0;
+      right: -10rem;
+      transform: rotate(25deg);
+    }
 
     &:hover {
       transition: all 0.2s;

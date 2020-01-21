@@ -7,7 +7,8 @@ import {
   ISetOperation,
   ISetDarkMode,
   ISetQuestionNumber,
-  INew
+  INew,
+  ISetTestId
 } from './';
 
 export enum ActionTypes {
@@ -19,7 +20,8 @@ export enum ActionTypes {
   setDarkMode,
   setQuestionNumber,
   emailChanged,
-  new
+  new,
+  setTestId
 }
 
 export type Action =
@@ -31,4 +33,5 @@ export type Action =
   | ISetOperation
   | ISetDarkMode
   | ISetQuestionNumber
-  | INew;
+  | INew
+  | ISetTestId;

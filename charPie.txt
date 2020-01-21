@@ -1,0 +1,210 @@
+data1: {
+        labels: ['Správne', 'Nesprávne'],
+        datasets: [
+          {
+            data: [
+              dataForPie[0].addition_correct_answers,
+              dataForPie[0].addition_bad_answers
+            ],
+            backgroundColor: ['#FF6384', '#FFCE56'],
+            hoverBackgroundColor: ['#FF6384', '#FFCE56']
+          }
+        ]
+      },
+      data2: {
+        labels: ['Správne', 'Nesprávne'],
+        datasets: [
+          {
+            data: [
+              dataForPie[0].substraction_correct_answers,
+              dataForPie[0].substraction_bad_answers
+            ],
+            backgroundColor: ['#FF6384', '#FFCE56'],
+            hoverBackgroundColor: ['#FF6384', '#FFCE56']
+          }
+        ]
+      },
+      data3: {
+        labels: ['Správne', 'Nesprávne'],
+        datasets: [
+          {
+            data: [
+              dataForPie[0].multyplying_correct_answers,
+              dataForPie[0].multyplying_bad_answers
+            ],
+            backgroundColor: ['#FF6384', '#FFCE56'],
+            hoverBackgroundColor: ['#FF6384', '#FFCE56']
+          }
+        ]
+      },
+      data4: {
+        labels: ['Správne', 'Nesprávne'],
+        datasets: [
+          {
+            data: [
+              dataForPie[0].division_correct_answers,
+              dataForPie[0].division_bad_answers
+            ],
+            backgroundColor: ['#FF6384', '#FFCE56'],
+            hoverBackgroundColor: ['#FF6384', '#FFCE56']
+          }
+        ]
+      } 
+ 
+ a = (id: number, event: any) => {
+    if (this.state.statsData !== null)
+      console.log(
+        'id',
+        id,
+        this.state.statsData.filter(
+          data => data.id.toString() === event.target.value
+        )
+      );
+    console.log('select', event.target.value);
+  };
+ 
+ renderOptions = (id: number, arr: string[]) => {
+    return (
+      <select
+        name="ids"
+        onChange={e => this.computePieData(e.target.value, id)}
+      >
+        {[...arr].reverse().map((data: string, index: number) => {
+          return (
+            <option key={index} value={data}>
+              {data}
+            </option>
+          );
+        })}
+      </select>
+    );
+  };
+ 
+ computePieData = (id: string, idOfPie: number) => {
+    console.log(id, idOfPie);
+    if (this.state.statsData !== null) {
+      var datas = this.state.statsData.filter(
+        data => data.id.toString() === id
+      );
+      console.log('datas', datas);
+
+      switch (idOfPie) {
+        case 1:
+          this.setState({
+            data1: {
+              labels: ['Správne', 'Nesprávne'],
+              datasets: [
+                {
+                  data: [
+                    datas[0].addition_correct_answers,
+                    datas[0].addition_bad_answers
+                  ],
+                  backgroundColor: ['#FF6384', '#FFCE56'],
+                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
+                }
+              ]
+            }
+          });
+          return;
+        case 2:
+          this.setState({
+            data2: {
+              labels: ['Správne', 'Nesprávne'],
+              datasets: [
+                {
+                  data: [
+                    datas[0].substraction_correct_answers,
+                    datas[0].substraction_bad_answers
+                  ],
+                  backgroundColor: ['#FF6384', '#FFCE56'],
+                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
+                }
+              ]
+            }
+          });
+          return;
+        case 3:
+          this.setState({
+            data3: {
+              labels: ['Správne', 'Nesprávne'],
+              datasets: [
+                {
+                  data: [
+                    datas[0].multyplying_correct_answers,
+                    datas[0].multyplying_bad_answers
+                  ],
+                  backgroundColor: ['#FF6384', '#FFCE56'],
+                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
+                }
+              ]
+            }
+          });
+          return;
+        case 4:
+          this.setState({
+            data4: {
+              labels: ['Správne', 'Nesprávne'],
+              datasets: [
+                {
+                  data: [
+                    datas[0].division_correct_answers,
+                    datas[0].division_bad_answers
+                  ],
+                  backgroundColor: ['#FF6384', '#FFCE56'],
+                  hoverBackgroundColor: ['#FF6384', '#FFCE56']
+                }
+              ]
+            }
+          });
+          return;
+        default:
+          return 0;
+      }
+    }
+  };
+ 
+ <div className="pies-chart-stats">
+          <div className="stats-box">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <h2>Sčítanie</h2>
+              {this.state.lineData !== null &&
+                this.renderOptions(1, this.state.lineData.labels)}
+            </div>
+
+            {this.state.data4 !== null && (
+              <Pie width={350} height={400} data={this.state.data1} />
+            )}
+          </div>
+          <div className="stats-box">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <h2>Odčítanie</h2>
+              {this.state.lineData !== null &&
+                this.renderOptions(2, this.state.lineData.labels)}
+            </div>
+
+            {this.state.data4 !== null && (
+              <Pie width={350} height={400} data={this.state.data2} />
+            )}
+          </div>
+          <div className="stats-box">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <h2>Násobenie</h2>
+              {this.state.lineData !== null &&
+                this.renderOptions(3, this.state.lineData.labels)}
+            </div>
+
+            {this.state.data4 !== null && (
+              <Pie width={350} height={400} data={this.state.data3} />
+            )}
+          </div>
+          <div className="stats-box">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <h2>Delenie</h2>
+              {this.state.lineData !== null &&
+                this.renderOptions(4, this.state.lineData.labels)}
+            </div>
+            {this.state.data4 !== null && (
+              <Pie width={350} height={400} data={this.state.data4} />
+            )}
+          </div>
+        </div>

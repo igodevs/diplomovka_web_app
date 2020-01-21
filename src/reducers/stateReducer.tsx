@@ -9,7 +9,8 @@ const INITIAL_STATE: IStateApp = {
   user: null,
   operation: '',
   color: 'white',
-  darkMode: false
+  darkMode: false,
+  testId: null
 };
 
 export const stateReducer = (
@@ -42,6 +43,8 @@ export const stateReducer = (
       });
     case ActionTypes.setDarkMode:
       return Object.assign({}, state, { darkMode: action.payload });
+    case ActionTypes.setTestId:
+      return Object.assign({}, state, { testId: action.payload });
     default:
       return state;
   }
